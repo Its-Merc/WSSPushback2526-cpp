@@ -52,24 +52,28 @@ void OnAutonomous() {}
  * task, not resume it from where it left off.
  */
 void OnOpControl() {
-    pros::Controller ctrler(pros::E_CONTROLLER_MASTER);
+    auto ctrler = ctrler::get();
     pros::MotorGroup left_mg({9, 20});    // Creates a motor group with forwards ports 9 and 20
     pros::MotorGroup right_mg({19, 10});  // Creates a motor group with forwards port 19 and 10
 
     ctrler.set_text(0, 0, "wazza");
+
     while (true) {
         pros::lcd::print(
             0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
             (pros::lcd::read_buttons() & LCD_BTN_CENTER) >> 1,
             (pros::lcd::read_buttons() & LCD_BTN_RIGHT) >> 0);  // Prints status of the emulated screen LCDs
 
+        auto cubic = [](int8_t val) -> std::variant<int, float, double> {
+            return std::pow(val / 127.0, 3) * 127;
+        };
+
         // Arcade control scheme
-        int dir = ctrler.get_analog(
-            pros::E_CONTROLLER_ANALOG_LEFT_Y);  // Gets amount forward/backward from left joystick
-        int turn = ctrler.get_analog(
-            pros::E_CONTROLLER_ANALOG_RIGHT_X);  // Gets the turn left/right from right joystick
-        left_mg.move(dir - turn);                // Sets left motor voltage
-        right_mg.move(dir + turn);               // Sets right motor voltage
-        pros::delay(20);                         // Run for 20 ms then update
+        int dir = ctrler::get_modified_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y, cubic);    // forward/backward
+        int turn = ctrler::get_modified_analog(pros::E_CONTROLLER_ANALOG_RIGHT_X, cubic);  // left/right turn
+        left_mg.move(dir - turn);   // Sets left motor voltage
+        right_mg.move(dir + turn);  // Sets right motor voltage
+
+        pros::delay(20);  // Run for 20 ms then update
     }
 }

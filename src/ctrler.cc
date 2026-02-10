@@ -4,6 +4,10 @@ namespace ctrler {
 
 static pros::Controller ctrler(pros::E_CONTROLLER_MASTER);
 
+pros::Controller& get() {
+    return ctrler;
+}
+
 int8_t get_analog(pros::controller_analog_e_t axis) {
     return ctrler.get_analog(axis);
 }
