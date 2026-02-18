@@ -35,8 +35,10 @@
 #define PROS_USE_LITERALS
 
 #include "api.h"
+#include "constants.hpp"
 #include "ctrler.hpp"
 #include "gui.hpp"
+#include "utils.hpp"
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
@@ -58,11 +60,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-void OnAutonomous(void);
-void OnInitialize(void);
-void OnDisabled(void);
-void OnCompetitionInitialize(void);
-void OnOpControl(void);
+void autonomous(void);
+void initialize(void);
+void disabled(void);
+void competitioninitialize(void);
+void opcontrol(void);
 #ifdef __cplusplus
 }
 #endif
