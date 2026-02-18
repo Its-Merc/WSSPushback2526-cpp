@@ -71,11 +71,11 @@ void opcontrol() {
         int8_t turn = ctrler::get_modified_analog(TURN_AXIS, utils::cubic);          // left/right turn
 
         auto left = throttle - turn;
-        auto right = throttle + turn;
-        utils::printDebug(3, "%d | %d", left, -right);
+        auto right = -(throttle + turn);  // negative because motors are flipped
+        utils::printDebug(3, "%d | %d", left, right);
 
-        left_mg.move(left);     // Sets left motor voltage
-        right_mg.move(-right);  // Sets right motor voltage | negative because motors are flipped
+        left_mg.move(left);    // Sets left motor voltage
+        right_mg.move(right);  // Sets right motor voltage
         pros::delay(CTRLER_UPDATE_RATE);
     }
 }
