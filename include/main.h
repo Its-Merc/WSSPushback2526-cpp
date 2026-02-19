@@ -38,6 +38,7 @@
 #include "constants.hpp"
 #include "ctrler.hpp"
 #include "gui.hpp"
+#include "togglebutton.hpp"
 #include "utils.hpp"
 
 /**

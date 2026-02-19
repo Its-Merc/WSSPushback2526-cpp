@@ -47,8 +47,8 @@ void autonomous() {}
 void opcontrol() {
     auto ctrler = ctrler::get();
 
-    pros::MotorGroup left_mg({DRIVE_PORTS[0], DRIVE_PORTS[2]});   // Creates the motor group for the left
-    pros::MotorGroup right_mg({DRIVE_PORTS[1], DRIVE_PORTS[3]});  // Creates the motor group for the right
+    pros::MotorGroup left_mg({kDrivePorts[0], kDrivePorts[2]});   // Creates the motor group for the left
+    pros::MotorGroup right_mg({kDrivePorts[1], kDrivePorts[3]});  // Creates the motor group for the right
 
     ctrler.set_text(0, 0, "you suck");
 
@@ -60,15 +60,15 @@ void opcontrol() {
         //     LCDs
 
         if (DEBUG) {
-            int8_t throttle = ctrler.get_analog(THROTTLE_AXIS);
-            int8_t turn = ctrler.get_analog(TURN_AXIS);
+            int8_t throttle = ctrler.get_analog(kThrottleAxis);
+            int8_t turn = ctrler.get_analog(kTurnAxis);
             utils::printDebug(1, "%d | %f", throttle, utils::cubic(throttle));
             utils::printDebug(2, "%d | %f", turn, utils::cubic(turn));
         }
 
         // Arcade control scheme
-        int8_t throttle = ctrler::get_modified_analog(THROTTLE_AXIS, utils::cubic);  // forward/backward
-        int8_t turn = ctrler::get_modified_analog(TURN_AXIS, utils::cubic);          // left/right turn
+        int8_t throttle = ctrler::get_modified_analog(kThrottleAxis, utils::cubic);  // forward/backward
+        int8_t turn = ctrler::get_modified_analog(kTurnAxis, utils::cubic);          // left/right turn
 
         auto left = throttle - turn;
         auto right = -(throttle + turn);  // negative because motors are flipped
