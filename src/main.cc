@@ -52,6 +52,12 @@ void opcontrol() {
 
     ctrler.set_text(0, 0, "you suck");
 
+    pros::Motor motor_score(kPortMotorScore);
+    pros::Motor motor_agris(kPortMotorAGRIS);
+
+    // std::vector<pros::controller_digital_e_t>& btns = {kBtn};
+    // ToggleButton toggle(btns, -1, [](int8_t state) { utils::printDebug(4, "Toggle state: %d", state); });
+
     while (true) {
         // pros::lcd::print(
         //     0, "%d %d %d", (pros::lcd::read_buttons() & LCD_BTN_LEFT) >> 2,
@@ -76,6 +82,18 @@ void opcontrol() {
 
         left_mg.move(left);    // Sets left motor voltage
         right_mg.move(right);  // Sets right motor voltage
+
+        if (ctrler.get_digital(kIntakeInBtn)) {
+            motor_score.move(127);
+            motor_agris.move(127);
+        } else if (ctrler.get_digital(kIntakeOutBtn)) {
+            motor_score.move(-127);
+            motor_agris.move(-127);
+        } else {
+            motor_score.move(0);
+            motor_agris.move(0);
+        }
+
         pros::delay(CTRLER_UPDATE_RATE);
     }
 }

@@ -16,10 +16,4 @@ double sinusoidal(int8_t val) {
     return sin * 127.0;
 }
 
-// lcd::print but with a debug check
-template <typename... Args>
-void printDebug(int16_t line, const char *fmt, Args... args) {
-    if (DEBUG) pros::lcd::print(line, fmt, args...);
-}
-
 }  // namespace utils
